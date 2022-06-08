@@ -48,6 +48,21 @@ class _TransactionFormState extends State<TransactionForm> {
               keyboardType: TextInputType.numberWithOptions(decimal: true),
               onSubmitted: (_) => _submitForm(),
             ),
+            Container(
+              height: 70,
+              child: Row(
+                children: [
+                  Text('Nenhuma data selecionada'),
+                  Container(
+                    margin: EdgeInsets.all(10),
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: Text('Seleciona Data'),
+                    ),
+                  )
+                ],
+              ),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
