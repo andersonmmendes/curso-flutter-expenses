@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class TransactionForm extends StatefulWidget {
   TransactionForm(this.onSubmit);
@@ -10,19 +11,37 @@ class TransactionForm extends StatefulWidget {
 }
 
 class _TransactionFormState extends State<TransactionForm> {
-  final titleController = TextEditingController();
+  final _titleController = TextEditingController();
+  final _valueController = TextEditingController();
 
-  final valueController = TextEditingController();
+  var _selectedDate;
 
   _submitForm() {
-    final title = titleController.text;
-    final value = double.tryParse(valueController.text) ?? 0.00;
+    final title = _titleController.text;
+    final value = double.tryParse(_valueController.text) ?? 0.00;
 
     if (title.isEmpty || value <= 0) {
       return;
     }
 
     widget.onSubmit(title, value);
+  }
+
+  _showDatePicker() {
+    showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2022),
+      lastDate: DateTime.now(),
+    ).then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    });
   }
 
   @override
@@ -34,14 +53,14 @@ class _TransactionFormState extends State<TransactionForm> {
         child: Column(
           children: [
             TextField(
-              controller: titleController,
+              controller: _titleController,
               decoration: InputDecoration(
                 labelText: 'Título',
               ),
               onSubmitted: (_) => _submitForm(),
             ),
             TextField(
-              controller: valueController,
+              controller: _valueController,
               decoration: InputDecoration(
                 labelText: 'Valor (R\$)',
               ),
@@ -52,13 +71,14 @@ class _TransactionFormState extends State<TransactionForm> {
               height: 70,
               child: Row(
                 children: [
-                  Text('Nenhuma data selecionada'),
-                  Container(
-                    margin: EdgeInsets.all(10),
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      child: Text('Seleciona Data'),
-                    ),
+                  Expanded(
+                    child: Text(_selectedDate == null
+                        ? 'Nenhuma data selecionada'
+                        : 'Data selecionada: ${DateFormat('dd/MM/y').format(_selectedDate)}'),
+                  ),
+                  ElevatedButton(
+                    onPressed: _showDatePicker,
+                    child: Text('Seleciona Data'),
                   )
                 ],
               ),
