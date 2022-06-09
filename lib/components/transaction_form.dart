@@ -82,7 +82,7 @@ class _TransactionFormState extends State<TransactionForm> {
                           ? 'Nenhuma data selecionada'
                           : 'Data selecionada: ${DateFormat('dd/MM/y').format(_selectedDate)}'),
                     ),
-                    ElevatedButton(
+                    TextButton(
                       onPressed: _showDatePicker,
                       child: Text('Seleciona Data'),
                     )
